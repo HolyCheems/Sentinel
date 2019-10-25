@@ -117,10 +117,22 @@ namespace EagleEye.Models
 				return Annotations.Where(a => a.Type == Annotation.AnnotationType.Parking);
 			}
 		}
-		/// <summary>
-		/// Only annotations of Aisle type
+
+        /// <summary>
+		/// Only annotations of Handicap type, added by Roshan Ruvanthika Krishnamurhty
 		/// </summary>
-		public IEnumerable<Annotation> Aisles {
+		public IEnumerable<Annotation> HandicapSpaces
+        {
+            get
+            {
+                return Annotations.Where(a => a.Type == Annotation.AnnotationType.Handicap);
+            }
+        }
+
+        /// <summary>
+        /// Only annotations of Aisle type
+        /// </summary>
+        public IEnumerable<Annotation> Aisles {
 			get
 			{
 				return Annotations.Where(a => a.Type == Annotation.AnnotationType.Aisle);
@@ -162,7 +174,7 @@ namespace EagleEye.Models
 						for (int y = 0; y < difference.Height; y++)
 						{
 							Vector2 pixelPoint = new Vector2((double)x / difference.Width, (double)y / difference.Height);
-							foreach (Annotation annotation in Annotations.Where(a => a.Contains(pixelPoint) && a.Type == Annotation.AnnotationType.Parking))
+							foreach (Annotation annotation in Annotations.Where(a => a.Type == Annotation.AnnotationType.Parking || a.Type == Annotation.AnnotationType.Handicap))
 							{
 								annotationPixelAreas[annotation]++;
 								annotation.PercentDifference += difference.GetPixel(x, y).Value();

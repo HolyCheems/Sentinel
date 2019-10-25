@@ -242,7 +242,7 @@
 	}
 	aStarNeighbors(nodes, a, goalAnnotation) {
 		return nodes.where(n => {
-			return n !== a && !this.lot.Annotations.any(an => an.ID !== goalAnnotation.ID && an.Type === 'Parking' && an.intersects(a, n));
+            return n !== a && !this.lot.Annotations.any(an => an.ID !== goalAnnotation.ID && an.Type !== 'Aisle' && an.intersects(a, n));
 		});
 	}
 	static get nodeDistance() {

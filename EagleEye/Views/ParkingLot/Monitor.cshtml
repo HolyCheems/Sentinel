@@ -1,45 +1,49 @@
 ﻿@model EagleEye.Views.ParkingLot.ParkingLot
 @{
-	Layout = "~/Views/ParkingLot/_ParkingLot.cshtml";
+    Layout = "~/Views/ParkingLot/_ParkingLot.cshtml";
 }
 @section Buttons {
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			Statistics
-		</div>
-		<table class="panel-body table">
-			<tr>
-				<th class="bg-success">Available</th>
-				<td id="availableSpaces" class="bg-success">...</td>
-			</tr>
-			<tr>
-				<th class="bg-danger">Occupied</th>
-				<td id="occupiedSpaces" class="bg-danger">...</td>
-			</tr>
-			<tr>
-				<th  class="bg-warning">Partially Obstructed</th>
-				<td id="partialSpaces" class="bg-warning">...</td>
-			</tr>
-			<tr>
-				<th>Total Spaces</th>
-				<td id="totalSpaces" >...</td>
-			</tr>
-		</table>
-	</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			Debug
-		</div>
-		<div class="panel-body">
-			<label>Partially Obstructed Threshold:</label>
-			<input class="form-control" type="range" min="0" max="1" step=".01" value="0.1" id="partiallyObstructedThreshold" />
-			<label>Obstructed Threshold:</label>
-			<input class="form-control" type="range" min="0" max="1" step=".01" value="0.25" id="obstructedThreshold" />
-		</div>
-	</div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Statistics
+        </div>
+        <table class="panel-body table">
+            <tr>
+                <th class="bg-success">Available</th>
+                <td id="availableSpaces" class="bg-success">...</td>
+            </tr>
+            <tr>
+                <th class="bg-primary">Available Handicap Spaces</th>
+                <td id="handicapSpaces" class="bg-primary">...</td>
+            </tr>
+            <tr>
+                <th class="bg-danger">Occupied</th>
+                <td id="occupiedSpaces" class="bg-danger">...</td>
+            </tr>
+            <tr>
+                <th class="bg-warning">Partially Obstructed</th>
+                <td id="partialSpaces" class="bg-warning">...</td>
+            </tr>
+            <tr>
+                <th>Total Spaces</th>
+                <td id="totalSpaces">...</td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Debug
+        </div>
+        <div class="panel-body">
+            <label>Partially Obstructed Threshold:</label>
+            <input class="form-control" type="range" min="0" max="1" step=".01" value="0.1" id="partiallyObstructedThreshold" />
+            <label>Obstructed Threshold:</label>
+            <input class="form-control" type="range" min="0" max="1" step=".01" value="0.25" id="obstructedThreshold" />
+        </div>
+    </div>
 }
 @section scripts {
-	<script>
+    <script>
 	let viewer = null;
 	function createPath() {
 		viewer.setPath(viewer.aStar(new Vector2(1,1), viewer.lot.Annotations[6].midpoints));
@@ -61,7 +65,7 @@
 				});
 				lot.Annotations.push(annotation);
 			});
-			
+
 			if (viewer === null) {
 				// create a new viewer
 				viewer = new AnnotationViewer(lot, annotations, (self, ctx, annotation) => {
@@ -75,21 +79,35 @@
 					}
 					if (annotation.Type === 'Parking') {
 						if (annotation.PercentDifference > document.getElementById('obstructedThreshold').value) {
-							ctx.fillStyle = 'rgba(255,0,0,0.5)';
+							ctx.fillStyle = 'rgba(255,0,0,0.3)';
 						} else if (annotation.PercentDifference > document.getElementById('partiallyObstructedThreshold').value) {
-							ctx.fillStyle = 'rgba(255,255,0,0.5)';
+							ctx.fillStyle = 'rgba(255,255,0,0.3)';
 						} else {
-							ctx.fillStyle = 'rgba(0,255,0,0.5)';
+							ctx.fillStyle = 'rgba(0,255,0,0.3)';
 						}
-						
+
 						return true;
-					} else if (annotation.Type === 'Aisle') {
-						ctx.fillStyle = 'rgba(128,128,255,0.2)';
+                    }
+
+                    else if (annotation.Type === 'Handicap') {
+						if (annotation.PercentDifference > document.getElementById('obstructedThreshold').value) {
+							ctx.fillStyle = 'rgba(255,0,0,0.3)';
+						} else if (annotation.PercentDifference > document.getElementById('partiallyObstructedThreshold').value) {
+							ctx.fillStyle = 'rgba(255,255,0,0.3)';
+						} else {
+							ctx.fillStyle = 'rgba(0,0,255,0.3)';
+						}
+
+						return true;
+                    }
+
+                    else if (annotation.Type === 'Aisle') {
+						ctx.fillStyle = 'rgba(187,0,255,0.2)';
 						return true;
 					} else {
 						return false;
 					}
-					
+
 				}, (self, ctx, annotation, point) => {
 					if (point === self.start) {
 						ctx.fillStyle = 'blue';
@@ -99,11 +117,11 @@
 					} else {
 						return false;
 					}
-					
+
 					});
 				annotations.addEventListener('click', (evt) => {
 					let pos = new Vector2(evt.offsetX / annotations.width, evt.offsetY / annotations.height);
-					let target = viewer.lot.Annotations.find(an => an.Type === "Parking" && an.contains(pos));
+					let target = viewer.lot.Annotations.find(an => an.contains(pos) && an.Type !== "Aisle");
 					if (target) {
 						viewer.goal = target;
 					} else {
@@ -119,7 +137,8 @@
 			}
 			// Update statistics
 			let total = 0;
-			let available = 0;
+            let available = 0;
+            let handicap = 0; // initializing handicap
 			let occupied = 0;
 			let partial = 0;
 			lot.Annotations.forEach(annotation => {
@@ -132,9 +151,23 @@
 					} else {
 						available++;
 					}
-				}
+                }
+                
+                else if (annotation.Type === 'Handicap') {
+					total++;
+					if (annotation.PercentDifference > document.getElementById('obstructedThreshold').value) {
+						occupied++;
+					} else if (annotation.PercentDifference > document.getElementById('partiallyObstructedThreshold').value) {
+						partial++;
+					} else {
+						handicap++;
+					}
+                }
+
+
 			});
-			document.getElementById('availableSpaces').innerHTML = available;
+            document.getElementById('availableSpaces').innerHTML = available;
+            document.getElementById('handicapSpaces').innerHTML = handicap;
 			document.getElementById('occupiedSpaces').innerHTML = occupied;
 			document.getElementById('partialSpaces').innerHTML = partial;
 			document.getElementById('totalSpaces').innerHTML = total;
@@ -145,5 +178,5 @@
 		});
 	}
 	updateViewer();
-	</script>
+    </script>
 }

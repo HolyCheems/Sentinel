@@ -1,27 +1,28 @@
 ﻿@model EagleEye.Views.ParkingLot.ParkingLot
 @{
-	Layout = "~/Views/ParkingLot/_ParkingLot.cshtml";
+    Layout = "~/Views/ParkingLot/_ParkingLot.cshtml";
 }
 @section Buttons {
-<div class="panel panel-default">
-	<div class="panel-heading flex-row justify-between">
-		<span>Edit</span>
-		<div class="btn btn-primary" onclick="viewer.save()">Save</div>
-	</div>
-	<div class="panel-body btn-group-vertical max-width">
-		<div class="btn btn-default" onclick="updateBaseline()">Update Baseline</div>
-		<label>Camera</label>
-		@{Html.RenderAction("ListView", "Camera", new { cameraID = Model.CameraID });}
-		<label>Annotations</label>
-		<div class="btn btn-default" onclick="viewer.newSpace()">New Parking Space</div>
-		<div class="btn btn-default" onclick="viewer.newAisle()">New Aisle</div>
-		<div class="btn btn-default" onclick="viewer.newConstant()">New Constant</div>
-	</div>
-</div>
+    <div class="panel panel-default">
+        <div class="panel-heading flex-row justify-between">
+            <span>Edit</span>
+            <div class="btn btn-primary" onclick="viewer.save()">Save</div>
+        </div>
+        <div class="panel-body btn-group-vertical max-width">
+            <div class="btn btn-default" onclick="updateBaseline()">Update Baseline</div>
+            <label>Camera</label>
+            @{Html.RenderAction("ListView", "Camera", new { cameraID = Model.CameraID });}
+            <label>Annotations</label>
+            <div class="btn btn-default" onclick="viewer.newSpace()">New Parking Space</div>
+            <div class="btn btn-default" onclick="viewer.newAisle()">New Aisle</div>
+            <div class="btn btn-default" onclick="viewer.newConstant()">New Constant</div>
+            <div class="btn btn-default" onclick="viewer.newHandicap()">New Handicap Space</div>
+        </div>
+    </div>
 
 }
 @section scripts {
-	<script>
+    <script>
 		let viewer = null;
 		$.ajax({
 			url: '/ParkingLot/Get',
@@ -54,6 +55,5 @@
 				displayBaseline();
 			});
 		}
-	</script>
+    </script>
 }
-
