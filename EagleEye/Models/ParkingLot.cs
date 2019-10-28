@@ -138,11 +138,23 @@ namespace EagleEye.Models
 				return Annotations.Where(a => a.Type == Annotation.AnnotationType.Aisle);
 			}
 		}
-		/// <summary>
-		/// Encapsulates the entire parking lot state
-		/// change, triggerd by Camera changes
-		/// </summary>
-		public void Update()
+
+        /// <summary>
+        /// Only annotations of Constant type
+        /// </summary>
+        public IEnumerable<Annotation> Constants
+        {
+            get
+            {
+                return Annotations.Where(a => a.Type == Annotation.AnnotationType.Constant);
+            }
+        }
+
+        /// <summary>
+        /// Encapsulates the entire parking lot state
+        /// change, triggerd by Camera changes
+        /// </summary>
+        public void Update()
 		{
 			if (Baseline != null && Baseline.SameSize(Camera.CurrentImage))
 			{
@@ -174,7 +186,7 @@ namespace EagleEye.Models
 						for (int y = 0; y < difference.Height; y++)
 						{
 							Vector2 pixelPoint = new Vector2((double)x / difference.Width, (double)y / difference.Height);
-							foreach (Annotation annotation in Annotations.Where(a => a.Type == Annotation.AnnotationType.Parking || a.Type == Annotation.AnnotationType.Handicap))
+							foreach (Annotation annotation in Annotations.Where(a => a.Type == Annotation.AnnotationType.Parking || a.Type == Annotation.AnnotationType.Handicap || a.Type == Annotation.AnnotationType.Constant))
 							{
 								annotationPixelAreas[annotation]++;
 								annotation.PercentDifference += difference.GetPixel(x, y).Value();

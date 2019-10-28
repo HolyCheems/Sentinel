@@ -9,6 +9,10 @@
         </div>
         <table class="panel-body table">
             <tr>
+                <th class="bg-secondary">Camera Status</th>
+                <td id="camstat" class="bg-secondary">...</td>
+            </tr>
+            <tr>
                 <th class="bg-success">Available</th>
                 <td id="availableSpaces" class="bg-success">...</td>
             </tr>
@@ -140,7 +144,26 @@
             let available = 0;
             let handicap = 0; // initializing handicap
 			let occupied = 0;
-			let partial = 0;
+            let partial = 0;
+
+            let count = 0;
+            let against = 0;
+            let status = "Clear"
+
+            // Will display a gui and grey out screen if camera obstructed
+            lot.Annotations.forEach(annotation => {
+                if (annotation.Type === 'Constant') {
+                    if (annotation.PercentDifference >= 0.25) {
+                        count++;
+                    }
+                    against++;
+                }
+            });
+
+            if (count == against) {
+                status = "Obstructed";
+            }
+
 			lot.Annotations.forEach(annotation => {
 				if (annotation.Type === 'Parking') {
 					total++;
@@ -165,7 +188,8 @@
                 }
 
 
-			});
+            });
+            document.getElementById('camstat').innerHTML = status;
             document.getElementById('availableSpaces').innerHTML = available;
             document.getElementById('handicapSpaces').innerHTML = handicap;
 			document.getElementById('occupiedSpaces').innerHTML = occupied;
