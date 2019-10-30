@@ -1,0 +1,74 @@
+﻿@model List<EagleEye.Views.ParkingLot.ParkingLot>
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts {
+	<script>
+		function deleteLot(id) {
+			$.ajax({
+				url: '/ParkingLot/Delete',
+				data: {
+					id: id
+				}
+			}).done(() => {
+				location.reload();
+			});
+		}
+	</script>
+	<script>
+	@foreach (var lot in Model) {
+		@:$.ajax({
+		@:	url: '/ParkingLot/Baseline',
+		@:	data: { id: @lot.ID}
+		@:}).done(data => {
+		@:	document.getElementById('@lot.ID').style.backgroundImage = `url('data:image/png;base64, ${ data}'`;
+		@:});
+	}
+	</script>
+}
+<style>
+	.panel-body {
+		background-repeat:no-repeat;
+		background-size:cover;
+	}
+
+</style>
+<h1 class="text-center">Parking Lots</h1>
+@if (Request.IsAdmin())
+{
+	<a class="btn btn-default btn-lg" href="/ParkingLot/New">
+		<span class="glyphicon glyphicon-plus"></span> Create
+	</a>
+}
+<hr />
+<div class="panel-group">
+
+	@foreach (var lot in Model)
+	{
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4>@lot.Name</h4>
+		</div>
+		<div class="panel-body" id="@lot.ID">
+
+			<div class="flex-row justify-between max-width">
+				<div class="btn-group">
+
+					@if (Request.IsAdmin())
+					{
+						@Html.ActionLink("Edit", "Edit", new { id = lot.ID }, new { @class = "btn btn-default btn-lg" })
+					}
+					@Html.ActionLink("View", "Monitor", new { id = lot.ID }, new { @class = "btn btn-default btn-lg" })
+				</div>
+				@if (Request.IsAdmin())
+				{
+					<button class="btn btn-danger btn-lg" onclick="deleteLot(@lot.ID)">Delete</button>
+				}
+			</div>
+			
+			<img  height="100px" />
+		</div>
+		
+		</div>
+	}
+</div>
