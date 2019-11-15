@@ -9,10 +9,6 @@
         </div>
         <table class="panel-body table">
             <tr>
-                <th class="bg-secondary">Camera Status</th>
-                <td id="camstat" class="bg-secondary">...</td>
-            </tr>
-            <tr>
                 <th class="bg-success">Available</th>
                 <td id="availableSpaces" class="bg-success">...</td>
             </tr>
@@ -38,6 +34,18 @@
             </tr>
         </table>
     </div>
+
+    @if (Request.IsAdmin())
+    {
+    <div id="problem_check" class="panel panel-default" display="none">
+        <div class="panel panel-heading">
+            Problem
+        </div>
+        <div class="panel-body">
+            <label>The camera needs to be reset.</label>
+        </div>
+    </div>
+    }
     <div class="panel panel-default">
         <div class="panel-heading">
             Debug
@@ -108,7 +116,7 @@
 
 						return true;
                     }
-					
+
 					else if (annotation.Type === 'Motorcycle') {
 						if (annotation.PercentDifference > document.getElementById('obstructedThreshold').value) {
 							ctx.fillStyle = 'rgba(255,0,0,0.3)';
@@ -120,7 +128,7 @@
 
 						return true;
                     }
-					
+
                     else if (annotation.Type === 'Aisle') {
 						ctx.fillStyle = 'rgba(187,0,255,0.2)';
 						return true;
@@ -162,10 +170,9 @@
 			let motorcycle = 0;
 			let occupied = 0;
             let partial = 0;
-
+			let hhh = "Not Available";
             let count = 0;
             let against = 0;
-            let status = "Clear"
 
             // Will display a gui and grey out screen if camera obstructed
             lot.Annotations.forEach(annotation => {
@@ -176,10 +183,6 @@
                     against++;
                 }
             });
-
-            if (count == against) {
-                status = "Obstructed";
-            }
 
 			lot.Annotations.forEach(annotation => {
 				if (annotation.Type === 'Parking') {
@@ -192,7 +195,7 @@
 						available++;
 					}
                 }
-                
+
                 else if (annotation.Type === 'Handicap') {
 					total++;
 					if (annotation.PercentDifference > document.getElementById('obstructedThreshold').value) {
@@ -203,7 +206,7 @@
 						handicap++;
 					}
                 }
-				
+
 				else if (annotation.Type === 'Motorcycle') {
 					total++;
 					if (annotation.PercentDifference > document.getElementById('obstructedThreshold').value) {
@@ -217,13 +220,25 @@
 
 
             });
-            document.getElementById('camstat').innerHTML = status;
-            document.getElementById('availableSpaces').innerHTML = available;
-            document.getElementById('handicapSpaces').innerHTML = handicap;
-            document.getElementById('motorcycleSpaces').innerHTML = motorcycle;
-			document.getElementById('occupiedSpaces').innerHTML = occupied;
-			document.getElementById('partialSpaces').innerHTML = partial;
-			document.getElementById('totalSpaces').innerHTML = total;
+
+
+			if (count == against){
+				document.getElementById("problem_check").style.display = "block";
+				document.getElementById('availableSpaces').innerHTML = hhh;
+				document.getElementById('handicapSpaces').innerHTML = hhh;
+				document.getElementById('motorcycleSpaces').innerHTML = hhh;
+				document.getElementById('occupiedSpaces').innerHTML = hhh;
+				document.getElementById('partialSpaces').innerHTML = hhh;
+				document.getElementById('totalSpaces').innerHTML = hhh;
+			}else{
+				document.getElementById("problem_check").style.display = "none";
+				document.getElementById('availableSpaces').innerHTML = available;
+				document.getElementById('handicapSpaces').innerHTML = handicap;
+				document.getElementById('motorcycleSpaces').innerHTML = motorcycle;
+				document.getElementById('occupiedSpaces').innerHTML = occupied;
+				document.getElementById('partialSpaces').innerHTML = partial;
+				document.getElementById('totalSpaces').innerHTML = total;
+			}
 
 			window.setTimeout(() => {
 				updateViewer();

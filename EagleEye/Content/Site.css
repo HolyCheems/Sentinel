@@ -16,32 +16,32 @@
 }
 .jumbotron {
 	color: black;
-	background-color: #dfa31b;
+	background-color: #21ae0d;
 	border-radius: 0 0 6px 6px !important;
 }
 .navbar {
 	background-color:black;
 }
 .navbar a {
-	color: #dfa31b !important;
+	color: #21ae0d !important;
 }
 .navbar a.selected {
 	color: white !important;
 }
 .btn-default {
-	background-color: black;
-	color: #dfa31b;
-	border-color: #dfa31b;
+    background-color: black;
+    color: #21ae0d;
+    border-color: #21ae0d;
 }
 .btn-default:hover {
 	color: white;
 	background-color: #262626;
 }
 .btn-primary {
-	background-color: #dfa31b;
-	border-color: #dfa31b;
-	box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
-	color: white;
+    background-color: #21ae0d;
+    border-color: #21ae0d;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+    color: white;
 }
 .btn-danger {
 	background-color: #570000;
@@ -50,12 +50,12 @@
 }
 
 hr {
-	border-color: #dfa31b;
+    border-color: #21ae0d;
 }
 .panel-default {
-	background-color: #262626;
-	border-color: #dfa31b;
-	color: white;
+    background-color: #262626;
+    border-color: #21ae0d;
+    color: white;
 }
 .panel-default > .panel-heading {
 	background-color:black;
@@ -87,9 +87,9 @@ hr {
 	color:white;
 }
 .form-control {
-	border-color: #dfa31b;
-	background-color:black;
-	color:white;
+    border-color: #21ae0d;
+    background-color: black;
+    color: white;
 }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 

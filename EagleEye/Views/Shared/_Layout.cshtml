@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="~/Content/icon.png" />
-    <title>Eagle Eye</title>
+	<link rel="icon" href="~/Content/Icon.png" />
+    <title>Sentinel</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 	@RenderSection("styles",false)
@@ -18,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Eagle Eye", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Sentinel", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
@@ -41,7 +41,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Eagle Eye</p>
+            <p>&copy; @DateTime.Now.Year - Sentinel</p>
         </footer>
     </div>
 
