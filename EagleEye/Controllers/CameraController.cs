@@ -91,8 +91,8 @@ namespace EagleEye.Controllers
 		/// <param name="camera">The camera ViewModel used to update the corresponding model</param>
 		/// <returns>An empty response</returns>
 		[HttpPost]
-		[Authorize(Roles = "Administrator")]
-		public ActionResult Update(Views.Camera.Camera camera)
+		//[Authorize(Roles = "Administrator")]
+        public ActionResult Update(Views.Camera.Camera camera)
 		{
 			Camera model = Repository<Camera>.Models.Values.FirstOrDefault(c => c.Name == camera.Name);
 			if (model == null)

@@ -61,6 +61,21 @@ namespace EagleEye.Controllers
             return new HttpNotFoundResult();
         }
         /// <summary>
+        /// Creates a view for default users to monitor a parking lot
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>An html view</returns>
+        [HttpGet]
+        public ActionResult MonitorUser(int id)
+        {
+            ParkingLot lot;
+            if (TryGetLot(id, out lot))
+            {
+                return View("MonitorUser", new Views.ParkingLot.ParkingLot(lot));
+            }
+            return new HttpNotFoundResult();
+        }
+        /// <summary>
         /// Creates a form view for instantiation of a new
         ///	parking lot
         /// </summary>

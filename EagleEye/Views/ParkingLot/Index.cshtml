@@ -54,13 +54,14 @@
                 <div class="flex-row justify-between max-width">
                     <div class="btn-group">
 
-                        @if (Request.IsAdmin())
-                        {
-                            @Html.ActionLink("Edit", "Edit", new { id = lot.ID }, new { @class = "btn btn-default btn-lg" })
-                        }
-                        
-                        @Html.ActionLink("View", "Monitor", new { id = lot.ID }, new { @class = "btn btn-default btn-lg" })
-                        
+					@if (Request.IsAdmin())
+					{
+						@Html.ActionLink("Edit", "Edit", new { id = lot.ID }, new { @class = "btn btn-default btn-lg" })
+						@Html.ActionLink("Monitor", "Monitor", new { id = lot.ID }, new { @class = "btn btn-default btn-lg" })
+					}
+					
+					@Html.ActionLink("View", "MonitorUser", new { id = lot.ID }, new { @class = "btn btn-default btn-lg" })
+
                     </div>
                     @if (Request.IsAdmin())
                     {

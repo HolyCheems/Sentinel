@@ -34,9 +34,6 @@
             </tr>
         </table>
     </div>
-
-    @if (Request.IsAdmin())
-    {
     <div id="problem_check" class="panel panel-default" display="none">
         <div class="panel panel-heading">
             Problem
@@ -45,7 +42,6 @@
             <label>The camera needs to be reset.</label>
         </div>
     </div>
-    }
     <div class="panel panel-default">
         <div class="panel-heading">
             Debug
@@ -222,8 +218,8 @@
             });
 
 
-			if (count == against){
-				document.getElementById("problem_check").style.display = "block";
+            if (count == against) {
+                document.getElementById("problem_check").style.display = "block";
 				document.getElementById('availableSpaces').innerHTML = hhh;
 				document.getElementById('handicapSpaces').innerHTML = hhh;
 				document.getElementById('motorcycleSpaces').innerHTML = hhh;
