@@ -197,7 +197,7 @@ namespace EagleEye.Models
 						for (int y = 0; y < difference.Height; y++)
 						{
 							Vector2 pixelPoint = new Vector2((double)x / difference.Width, (double)y / difference.Height);
-							foreach (Annotation annotation in Annotations.Where(a => a.Type != Annotation.AnnotationType.Aisle))
+							foreach (Annotation annotation in Annotations.Where(a => a.Contains(pixelPoint) && a.Type != Annotation.AnnotationType.Aisle))
 							{
 								annotationPixelAreas[annotation]++;
 								annotation.PercentDifference += difference.GetPixel(x, y).Value();
