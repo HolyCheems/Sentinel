@@ -17,7 +17,6 @@ namespace EagleEye
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 			EagleEyeConfig.ImportDatabase();
-			Tests.Tests.RunTests();
 		}
 		~MvcApplication()
 		{

@@ -149,7 +149,6 @@
     <Compile Include="Models\Geometry\PointSorter.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\Tests.cs" />
     <Compile Include="Views\Camera\Camera.cs" />
     <Compile Include="Views\ParkingLot\Annotation.cs" />
     <Compile Include="Views\ParkingLot\ParkingLot.cs" />

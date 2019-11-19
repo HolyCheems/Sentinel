@@ -173,7 +173,7 @@
             // Will display a gui and grey out screen if camera obstructed
             lot.Annotations.forEach(annotation => {
                 if (annotation.Type === 'Constant') {
-                    if (annotation.PercentDifference >= 0.25) {
+                    if (annotation.PercentDifference >= 0.1) {
                         count++;
                     }
                     against++;
