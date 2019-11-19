@@ -1,0 +1,46 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+	<style>
+		.body-content {
+			padding-top:16px;
+		}
+	</style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/camera");
+}
+	<div class="row">
+		<div class="col col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1>Camera Feed</h1>
+				</div>
+				<div class="panel-body row">
+					<div class="col col-md-3">
+						<form>
+							<label>Camera Name:</label>
+							<input id="cameraName" type="text" class="form-control" />
+							<br/>
+							<button class="btn btn-primary" type="submit">Start Camera</button>
+						</form>
+					</div>
+					<div class="col col-md-9">
+						<video width="400" height="300" autoplay></video>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+	document.querySelector('form').addEventListener('submit', (evt) => {
+		evt.preventDefault();
+		begin();
+	});
+</script>
+
+
