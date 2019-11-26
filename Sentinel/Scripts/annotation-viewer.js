@@ -35,49 +35,6 @@
 			this.setPath(this.aStar(this.start, this.goal));
 	}
 	setPath(path) {
-		// Cubic spline
-		//let Dy = null;
-		//let Dx = null;
-		//let cfs = new Matrix(path.length - 1, path.length - 1);
-		//for (let i = 0; i < cfs.rowCount; i++) {
-		//	for (let j = 0; j < cfs.columnCount; j++) {
-		//		if (i === 0 && j === 0 || i === cfs.rowCount - 1 && j === cfs.columnCount - 1) {
-		//			cfs.set(i, j, 2);
-		//		} else if (i === j) {
-		//			cfs.set(i, j, 4);
-		//		} else if (j - 1 === i || i - 1 === j) {
-		//			cfs.set(i, j, 1);
-		//		}
-		//	}
-		//}
-		//console.log(cfs);
-		//{
-			
-		//	let vector = [];
-		//	for (let i = 0; i < path.length - 1; i++) {
-		//		vector.push(3 * (path[i + 1].X - path[i].X));
-		//	}
-		//	Dx = cfs.inverse.multiplyVector(vector);
-		//}
-		//{
-		//	let vector = [];
-		//	for (let i = 0; i < path.length - 1; i++) {
-		//		vector.push(3 * (path[i + 1].Y - path[i].Y));
-		//	}
-		//	Dy = cfs.inverse.multiplyVector(vector);
-		//}
-		//let spline = [];
-		//function interpolate(points,d,t,i) {
-		//	return points[i] + d[i] * t + (3 * (points[i + 1] - points[i]) - 2 * d[i] - d[i + 1]) * t * t + (2 * (points[i] - points[i + 1]) + d[i] + d[i + 1]) * t * t * t;
-		//}
-		//for (let i = 0; i < path.length - 1; i++) {
-		//	for (let t = 0; t < 1; t += 0.1) {
-		//		spline.push(new Vector2(
-		//			interpolate(path.select(p => p.X), Dx, t,i),
-		//			interpolate(path.select(p => p.Y), Dy, t,i)
-		//		));
-		//	}
-		//}
 		this.path = path;
 	}
 	toScreen(point) {
@@ -195,32 +152,6 @@
 					nodes.push(start.add(segment.normalized().scale(t)));
 				}
 			}
-			//let xAxes = [
-			//	an.Points[1].subtract(an.Points[0]).normalized(),
-			//	an.Points[2].subtract(an.Points[3]).normalized()
-			//];
-			//let yAxes = [
-			//	an.Points[3].subtract(an.Points[0]).normalized(),
-			//	an.Points[2].subtract(an.Points[1]).normalized()
-			//];
-			//for (let xt = 0; xt <= 1; xt += 1 / 8) {
-			//	for (let yt = 0; yt <= 1; yt += 1 / 8) {
-			//		let yStart = xAxes[0].scale(xt).add(an.Points[0]);
-			//		let yEnd = xAxes[1].scale(xt).add(an.Points[3]);
-					
-						
-			//		let xStart = yAxes[0].scale(yt).add(an.Points[0]);
-			//		let xEnd = yAxes[1].scale(yt).add(an.Points[1]);
-			//		if (yStart.dot(xStart) < 0) {
-			//			let temp = yStart;
-			//			yStart = yEnd;
-			//			yEnd = temp;
-			//		}
-			//		let t = xStart.subtract(yStart).cross(yEnd.scale(1 / xEnd.cross(yEnd)));
-			//		nodes.push(xEnd.subtract(xStart).normalized().scale(t).add(xStart));
-			//	}
-			//}
-			
 		});
 		return nodes;
 	}

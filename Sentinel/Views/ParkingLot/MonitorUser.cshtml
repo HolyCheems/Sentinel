@@ -154,7 +154,7 @@
 			// Update statistics
 			let total = 0;
             let available = 0;
-            let handicap = 0; // initializing handicap
+            let handicap = 0;
 			let motorcycle = 0;
 			let occupied = 0;
             let partial = 0;
@@ -162,7 +162,7 @@
             let count = 0;
             let against = 0;
 
-            // Will display a gui and grey out screen if camera obstructed
+            // Camera obstruction logic, sends problem message if activated
             lot.Annotations.forEach(annotation => {
                 if (annotation.Type === 'Constant') {
                     if (annotation.PercentDifference >= 0.25) {

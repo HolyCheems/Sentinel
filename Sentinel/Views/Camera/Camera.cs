@@ -28,10 +28,7 @@ namespace Sentinel.Views.Camera
 			if (camera.CurrentImage != null)
 			{
 				using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
-				{
-					// Scaling
-					//camera.CurrentImage.Scale(EagleEyeConfig.WebImageWidth).Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-					
+				{	
 					// No scaling
 					camera.CurrentImage.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
 

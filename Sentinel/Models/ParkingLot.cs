@@ -59,7 +59,7 @@ namespace Sentinel.Models
 		public string Name { get; set; }
 		private Camera m_camera;
 		/// <summary>
-		/// The assocative camera that monitors this parking lot
+		/// The associative camera that monitors this parking lot
 		/// </summary>
 		public Camera Camera {
 			get {
@@ -119,7 +119,7 @@ namespace Sentinel.Models
 		}
 		
 		/// <summary>
-		/// Only annotations of Motorcycle type, added by Mahdi Almashhad
+		/// Only annotations of Motorcycle type
 		/// </summary>
 		public IEnumerable<Annotation> MotorcycleSpaces
         {
@@ -130,7 +130,7 @@ namespace Sentinel.Models
         }
 
         /// <summary>
-		/// Only annotations of Handicap type, added by Roshan Ruvanthika Krishnamurhty
+		/// Only annotations of Handicap type
 		/// </summary>
 		public IEnumerable<Annotation> HandicapSpaces
         {
@@ -163,7 +163,7 @@ namespace Sentinel.Models
 
         /// <summary>
         /// Encapsulates the entire parking lot state
-        /// change, triggerd by Camera changes
+        /// change, triggered by Camera changes
         /// </summary>
         public void Update()
 		{

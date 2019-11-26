@@ -12,7 +12,7 @@ namespace Sentinel.Models
 	/// </summary>
 	/// <remarks>
 	/// Author: Gage Coates.
-	/// Every node in the tree, including primives, are
+	/// Every node in the tree, including primitives, are
 	/// stored as Json instances differentiated by
 	/// the Type property
 	/// </remarks>
