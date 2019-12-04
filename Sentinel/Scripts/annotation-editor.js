@@ -10,7 +10,7 @@
                 case 'Select': ctx.fillStyle = 'rgba(0,0,192,0.25)'; break;//
                 case 'Constant': ctx.fillStyle = 'rgba(255,255,255,0.2)'; break;//white
                 case 'Handicap': ctx.fillStyle = 'rgba(0,0,255,0.3)'; break;//green 
-                case 'Motorcycle': ctx.fillStyle = 'rgba(255,165,0,0.3)'; break;//Yellow
+                case 'Motorcycle': ctx.fillStyle = 'rgba(0,255,234,0.3)'; break;//Teal
 
             }
             return true;
