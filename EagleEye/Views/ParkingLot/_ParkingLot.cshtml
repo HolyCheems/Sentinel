@@ -1,0 +1,130 @@
+﻿@model EagleEye.Views.ParkingLot.ParkingLot
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts {
+	@Scripts.Render("~/bundles/parking")
+	<script>
+		let background = document.getElementById('baseline');
+		let annotations = document.getElementById('editor');
+		let viewport = document.getElementById('viewport');
+		let form = document.getElementById('viewForm');
+		function updateViewportSize() {
+			let width = viewport.parentElement.clientWidth - 32;
+
+			let ratio = background.naturalHeight / background.naturalWidth;
+			let height = width * ratio;
+			viewport.style.width = width + 'px';
+			viewport.style.height = height + 'px';
+			annotations.width = width;
+			annotations.height = height;
+			background.width = width;
+			background.height = height;
+			viewport.classList.remove('hidden');
+		}
+		background.addEventListener('load', (evt) => {
+			updateViewportSize();
+		})
+		window.addEventListener('resize', () => {
+			updateViewportSize();
+		})
+		let backgroundRadio = form.elements['background'];
+		let annotationCheck = form.elements['annotations'][0];
+		let updateInterval = null;
+		for (let i = 0; i < backgroundRadio.length; i++) {
+			backgroundRadio[i].addEventListener('change', (evt) => {
+				switch (backgroundRadio.value) {
+					case 'baseline':
+						displayBaseline();
+						break;
+					case 'feed':
+						displayFeed();
+						break;
+					case 'none':
+						displayNone();
+						break;
+				}
+			});
+		}
+
+
+        annotationCheck.addEventListener('change', (evt) => {
+            if (annotationCheck.checked) {
+                annotations.classList.remove('hidden');
+            } else {
+                annotations.classList.add('hidden');
+            }
+        });
+
+		function setBackground(base64data) {
+            background.src = `data:image/png;base64, ${base64data}`;
+        }
+
+		function resetBackground() {
+			if (updateInterval !== null) {
+				window.clearInterval(updateInterval);
+			}
+			background.classList.remove('hidden');
+		}
+		function displayBaseline() {
+			resetBackground();
+			$.ajax({
+				url: '/ParkingLot/Baseline',
+				data: {id:viewer.lot.ID}
+			}).done(data => {
+				setBackground(data);
+			});
+		}
+		function displayNone() {
+			resetBackground();
+			background.classList.add('hidden');
+		}
+
+		function displayFeed() {
+			resetBackground();
+			updateInterval = window.setTimeout(() => {
+				$.ajax({
+					url: '/Camera/Get',
+					data: {id:viewer.lot.CameraID}
+				}).done(data => {
+					if (backgroundRadio.value === 'feed') {
+						setBackground(data.CurrentImage);
+						displayFeed();
+					}
+				});
+			},500)
+		}
+	</script>
+	@RenderSection("scripts",false)
+}
+
+<div class="row">
+	<div class="col col-md-3 ">
+		@Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default back" })
+		<h1>
+			@Model.Name
+		</h1>
+		@RenderSection("Buttons", false)
+		<div class="panel panel-default">
+			<div class="panel-heading">View</div>
+			<div class="panel-body">
+				<form id="viewForm">
+					<label>Background:</label>
+					<div class="form-group-sm">
+						@Html.RadioButton("background", "baseline", false) <label>Baseline</label><br />
+						@Html.RadioButton("background", "feed", true) <label>Camera feed</label><br />
+						@Html.RadioButton("background", "none", false) <label>None</label><br />
+						@Html.CheckBox("annotations", true) <label>Show Annotations</label>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col col-md-9">
+		<div id="viewport" class="hidden">
+			<img id="baseline" />
+			<canvas id="editor" />
+		</div>
+	</div>
+</div>
+

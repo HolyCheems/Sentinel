@@ -1,0 +1,28 @@
+﻿@model EagleEye.Views.User.User
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<header class="w3-container w3-black">
+	<h1><b>Welcome to EagleEye Parking!</b></h1>
+	<h2><b>Choose a User</b></h2>
+</header>
+<div class="panel panel-default">
+	<div class="panel-body">
+		@using (Html.BeginForm("Login", "User", FormMethod.Post, new { @style = "display:inline-block" }))
+		{
+			<input class="hidden" name="AccessLevel" value="Administrator" />
+			<button type="submit" class="btn btn-danger btn-lg" name="AccessLevel">Admin</button>
+			<h4>Manage parking lots and cameras</h4>
+		}
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body">
+		@using (Html.BeginForm("Login", "User", FormMethod.Post, new { @style = "display:inline-block" }))
+		{
+			<input class="hidden" name="AccessLevel" value="User" />
+			<button type="submit" class="btn btn-default btn-lg" name="AccessLevel">Default</button>
+			<h4>View parking space availability</h4>
+		}
+	</div>
+</div>

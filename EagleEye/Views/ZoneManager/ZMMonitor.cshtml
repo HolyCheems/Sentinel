@@ -1,0 +1,132 @@
+﻿@model EagleEye.Views.ZoneManager.ZoneManager
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Statistics
+    </div>
+    <table class="panel-body table">
+        <tr>
+            <th class="bg-success">Available</th>
+            <td id="availableSpaces" class="bg-success">...</td>
+        </tr>
+        <tr>
+            <th class="bg-primary">Available Handicap Spaces</th>
+            <td id="handicapSpaces" class="bg-primary">...</td>
+        </tr>
+        <tr>
+            <th class="bg-light">Available Motorcycle Spaces</th>
+            <td id="motorcycleSpaces" class="bg-light">...</td>
+        </tr>
+        <tr>
+            <th>Total Spaces</th>
+            <td id="totalSpaces">...</td>
+        </tr>
+    </table>
+</div>
+<style>
+    .panel-body {
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+<h1 class="text-center">Zones</h1>
+@if (Request.IsAdmin())
+{
+    <a class="btn btn-default btn-lg" href="/ParkingLot/New">
+        <span class="glyphicon glyphicon-plus"></span> Create Zone
+    </a>
+}
+<hr />
+<div class="panel-group">
+    @foreach (var lot in Model.Lots)
+    {
+        <div class="panel-body" id="@lot.ID">
+            <div class="flex-row justify-between max-width">
+                <div class="btn-group">
+                    @if (Request.IsAdmin())
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = lot.ID, zmID = Model.ID }, new { @class = "btn btn-default btn-lg" })
+                    }
+                    @Html.ActionLink("View", "Monitor", new { id = lot.ID, zmID = Model.ID }, new { @class = "btn btn-default btn-lg" })
+                </div>
+                @if (Request.IsAdmin())
+                {
+                    <button class="btn btn-danger btn-lg" onclick="deleteLot(@lot.ID, @Model.ID">Delete</button>
+                }
+            </div>
+
+            <img height="100px" />
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script>
+	let viewer = null;
+	function updateViewer() {
+		$.ajax({
+			url: '/ZoneManager/Get',
+			data: { id:@Model.ID}
+		}).done(zm => {
+			// Update statistics
+			let total = 0;
+            let total_standard = 0;
+            let total_handicap = 0;
+			let total_motorcycle = 0;
+
+            //Sets values for the ZM statistics, right now is only total number of specific spaces.
+            zm.Lots.forEach(lot => {
+                lot.Annotations.forEach(annotation => {
+                    if (annotation.Type === 'Parking') {
+                        total_standard++;
+                    } else if (annotation.Type === 'Handicap') {
+                        total_handicap++;
+                    } else if (annotation.Type === 'Motorcycle') {
+                        total_motorcycle++;
+                    }
+                });
+            });
+
+            total = total_standard + total_handicap + total_motorcycle;
+
+            });
+
+            document.getElementById('availableSpaces').innerHTML = total_standard;
+            document.getElementById('handicapSpaces').innerHTML = total_handicap;
+            document.getElementById('motorcycleSpaces').innerHTML = total_motorcycle;
+			document.getElementById('totalSpaces').innerHTML = total;
+
+			window.setTimeout(() => {
+				updateViewer();
+			}, 500);
+		});
+	}
+	updateViewer();
+    </script>
+    <script>
+        function deleteLot(id, zmID) {
+            $.ajax({
+                url: '/ParkingLot/Delete',
+                data: {
+                    id: id,
+                    zmID :zmID
+                }
+            }).done(() => {
+                location.reload();
+            });
+        }
+    </script>
+    <script>
+    @foreach (var lot in Model.Lots) {
+        @:$.ajax({
+        @:  url: 'ParkingLot/Baseline',
+        @:  data: {id: @lot.ID, zmID: @Model.ID}
+        @:}).done(data => {
+        @:  document.getElementById('@lot.ID').style.backgroundImage = `url('data:image/png;base64, ${data}'`;
+        @:});
+    }
+    </script>
+}

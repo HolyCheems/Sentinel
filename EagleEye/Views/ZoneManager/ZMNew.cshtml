@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .body-content {
+        width: fit-content;
+    }
+</style>
+<form id="newZMForm">
+    <h1 class="panel-heading">New Zone Manager</h1>
+    <label>Name:</label>
+    @Html.TextBox("name", "", new { @class = "form-control" })
+    <br />
+    <button type="submit" class="btn btn-primary btn-block">Create</button>
+</form>
+<script>
+	let form = document.getElementById('newZMForm');
+	form.addEventListener('submit', (evt) => {
+		evt.preventDefault();
+		$.ajax({
+			url: '/ZoneManager/Create',
+			data: {
+				name: form.elements["name"].value,
+			}
+		}).done(() => {
+			location.href = '/ZoneManager/ZMIndex';
+		});
+	});
+</script>

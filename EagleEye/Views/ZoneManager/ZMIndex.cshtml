@@ -1,0 +1,58 @@
+﻿@model List<EagleEye.Views.ZoneManager.ZoneManager>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts {
+    <script>
+		function deleteZM(id) {
+			$.ajax({
+				url: '/ZoneManager/Delete',
+				data: {
+					id: id
+				}
+			}).done(() => {
+				location.reload();
+			});
+		}
+    </script>
+}
+<style>
+    .panel-body {
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+<h1 class="text-center">Parking Lots</h1>
+@if (Request.IsAdmin())
+{
+    <a class="btn btn-default btn-lg" href="/ZoneManager/ZMNew">
+        <span class="glyphicon glyphicon-plus"></span> Create
+    </a>
+}
+<hr />
+<div class="panel-group">
+
+    @foreach (var zm in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>@zm.Name</h4>
+            </div>
+            <div class="panel-body" id="@zm.ID">
+
+                <div class="flex-row justify-between max-width">
+                    <div class="btn-group">
+                        @Html.ActionLink("View", "ZMMonitor", new { id = zm.ID }, new { @class = "btn btn-default btn-lg" })
+                    </div>
+                    @if (Request.IsAdmin())
+                    {
+                        <button class="btn btn-danger btn-lg" onclick="deleteZM(@zm.ID)">Delete</button>
+                    }
+                </div>
+
+                <img height="100px" />
+            </div>
+
+        </div>
+    }
+</div>
